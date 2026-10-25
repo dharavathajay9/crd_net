@@ -1,0 +1,26 @@
+# CRD-Net — keep model checkpoints and regenerable dumps out of git
+
+# Model checkpoints / weights (never push)
+checkpoints*/
+*checkpoints*/
+pretraining_backups/
+*.pth
+*.pt
+*.ckpt
+*.onnx
+*.safetensors
+
+# Training log dumps (tb events, per-sample masks)
+log*/
+logs/
+tb/
+predictions_*/
+*_color/
+
+# Python environments & caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
