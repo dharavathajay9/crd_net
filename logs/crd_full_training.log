@@ -1,0 +1,42 @@
+/home/cse-sdpl/miniconda3/envs/cmx/lib/python3.10/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+[32m24 17:48:44 [0mUsing E5: SegFormer-B2 with counterfactual reliability
+[32m24 17:48:45 [0mUsing MLP Decoder
+[32m24 17:48:45 [0mUsing E5: SegFormer-B2 with counterfactual reliability
+[32m24 17:48:46 [0mUsing MLP Decoder
+CRD-Net initialization
+  Device: cuda
+  E5 checkpoint: /home/cse-sdpl/Downloads/CMX_E5/log_TDD_mit_b2_e5/checkpoint/epoch-100.pth
+  Checkpoint epoch: 100
+  Loaded tensors: 869
+  Missing keys (new CRD fusion parameters): 0
+  Unexpected keys: 0
+Resuming from epoch 5; checkpoint: /home/cse-sdpl/Downloads/CRD_Net/checkpoints/crd_epoch-last.pth
+Existing best validation mIoU: 61.0326%
+Validation images: 392
+
+TRAINING MODE ENABLED: CRD outputs only.
+Terminated
+/home/cse-sdpl/miniconda3/envs/cmx/lib/python3.10/multiprocessing/resource_tracker.py:224: UserWarning: resource_tracker: There appear to be 3 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+/home/cse-sdpl/miniconda3/envs/cmx/lib/python3.10/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+[32m24 17:54:45 [0mUsing E5: SegFormer-B2 with counterfactual reliability
+[32m24 17:54:46 [0mUsing MLP Decoder
+[32m24 17:54:46 [0mUsing E5: SegFormer-B2 with counterfactual reliability
+[32m24 17:54:47 [0mUsing MLP Decoder
+CRD-Net initialization
+  Device: cuda
+  E5 checkpoint: /home/cse-sdpl/Downloads/CMX_E5/log_TDD_mit_b2_e5/checkpoint/epoch-100.pth
+  Checkpoint epoch: 100
+  Loaded tensors: 869
+  Missing keys (new CRD fusion parameters): 0
+  Unexpected keys: 0
+Resuming from epoch 5; checkpoint: /home/cse-sdpl/Downloads/CRD_Net/checkpoints/crd_epoch-last.pth
+Existing best validation mIoU: 61.0326%
+Validation images: 392
+
+TRAINING MODE ENABLED: CRD outputs only.
+Terminated
+/home/cse-sdpl/miniconda3/envs/cmx/lib/python3.10/multiprocessing/resource_tracker.py:224: UserWarning: resource_tracker: There appear to be 3 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

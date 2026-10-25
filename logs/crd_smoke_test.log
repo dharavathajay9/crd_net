@@ -1,0 +1,35 @@
+/home/cse-sdpl/miniconda3/envs/cmx/lib/python3.10/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+[32m24 17:33:06 [0mUsing E5: SegFormer-B2 with counterfactual reliability
+[32m24 17:33:06 [0mUsing MLP Decoder
+[32m24 17:33:07 [0mUsing E5: SegFormer-B2 with counterfactual reliability
+[32m24 17:33:08 [0mUsing MLP Decoder
+CRD-Net initialization
+  Device: cuda
+  E5 checkpoint: /home/cse-sdpl/Downloads/CMX_E5/log_TDD_mit_b2_e5/checkpoint/epoch-100.pth
+  Checkpoint epoch: 100
+  Loaded tensors: 869
+  Missing keys (new CRD fusion parameters): 0
+  Unexpected keys: 0
+Validation images: 392
+
+TRAINING MODE ENABLED: CRD outputs only.
+[32m24 17:33:11 [0mLoad Model: /home/cse-sdpl/Downloads/CRD_Net/checkpoints/crd_epoch-last.pth
+[32m24 17:33:12 [0mLoad model, Time usage:
+	IO: 0.4307394027709961, initialize parameters: 0.014279603958129883
+[32m24 17:33:12 [0mGPU 0 handle 392 data.
+Epoch 1/1 | lr=6.00e-05 | steps=2 | total=0.077672 | seg=0.007737 | reliability=0.696593 | distillation=0.002762
+  0%|          | 0/392 [00:00<?, ?it/s]  0%|          | 0/392 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/cse-sdpl/Downloads/CRD_Net/scripts/train_crd.py", line 525, in <module>
+    main()
+  File "/home/cse-sdpl/Downloads/CRD_Net/scripts/train_crd.py", line 482, in main
+    validation_evaluator.run(
+  File "/home/cse-sdpl/Downloads/CMX_E5/engine/evaluator.py", line 89, in run
+    result_line = self.single_process_evalutation()
+  File "/home/cse-sdpl/Downloads/CMX_E5/engine/evaluator.py", line 108, in single_process_evalutation
+    results_dict = self.func_per_iteration(dd,self.devices[0])
+  File "/home/cse-sdpl/Downloads/CMX_E5/engine/evaluator.py", line 166, in func_per_iteration
+    raise NotImplementedError
+NotImplementedError
+ERROR conda.cli.main_run:execute(148): `conda run python /home/cse-sdpl/Downloads/CRD_Net/scripts/train_crd.py --epochs 1 --steps-per-epoch 2 --batch-size 2 --workers 2 --run` failed. (See above for error)

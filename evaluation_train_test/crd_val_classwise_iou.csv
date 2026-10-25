@@ -1,0 +1,10 @@
+Class,Validation IoU (%)
+Unlabeled,97.7872
+Car,86.9194
+Person,72.2516
+Bike,73.2014
+Curve,40.0828
+Car stop,32.0333
+Guardrail,48.2677
+Color cone,60.8986
+Bump,52.5222

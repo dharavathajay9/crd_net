@@ -1,0 +1,20 @@
+{
+  "dataset_split": "train",
+  "class_IoU_percent": [
+    99.727,
+    98.4204,
+    93.7767,
+    94.3015,
+    94.4068,
+    96.1521,
+    96.9695,
+    92.176,
+    95.6066
+  ],
+  "mIoU_percent": 95.7263,
+  "mean_class_accuracy_percent": 95.2262,
+  "frequency_weighted_IoU_percent": 99.4796,
+  "mean_pixel_accuracy_percent": 98.2928,
+  "pixel_accuracy_percent": 99.7362,
+  "source_log": "/home/cse-sdpl/Downloads/CRD_Net/evaluation_train_test/crd_train_evaluation_20261025_223514.log"
+}

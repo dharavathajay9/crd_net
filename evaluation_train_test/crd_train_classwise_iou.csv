@@ -1,0 +1,10 @@
+Class,Train IoU (%)
+Unlabeled,99.727
+Car,98.4204
+Person,93.7767
+Bike,94.3015
+Curve,94.4068
+Car stop,96.1521
+Guardrail,96.9695
+Color cone,92.176
+Bump,95.6066

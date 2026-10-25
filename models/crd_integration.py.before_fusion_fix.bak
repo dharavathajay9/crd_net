@@ -1,0 +1,137 @@
+
+from pathlib import Path
+import sys
+
+import torch
+import torch.nn as nn
+
+
+E5_ROOT = Path("/home/cse-sdpl/Downloads/CMX_E5")
+CRD_ROOT = Path("/home/cse-sdpl/Downloads/CRD_Net")
+
+if str(E5_ROOT) not in sys.path:
+    sys.path.insert(0, str(E5_ROOT))
+
+# Load CRD-Net's independent fusion module directly by file path.
+import importlib.util
+
+_fusion_path = CRD_ROOT / "models" / "reliability_fusion.py"
+_spec = importlib.util.spec_from_file_location(
+    "crd_reliability_fusion",
+    _fusion_path,
+)
+_fusion_module = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_fusion_module)
+
+ReliabilityGuidedFusion = _fusion_module.ReliabilityGuidedFusion
+
+
+def replace_fusion_modules(model):
+    """
+    Replace the four E5 fusion modules with CRD-Net fusion modules.
+    The original E5 model instance is not modified on disk.
+    """
+    if not hasattr(model, "backbone"):
+        raise AttributeError("Expected model.backbone was not found.")
+
+    backbone = model.backbone
+
+    if not hasattr(backbone, "FFMs"):
+        raise AttributeError("Expected backbone.FFMs was not found.")
+
+    channels = [64, 128, 320, 512]
+
+    if len(backbone.FFMs) != 4:
+        raise RuntimeError(
+            f"Expected 4 fusion stages, found {len(backbone.FFMs)}."
+        )
+
+    device = next(backbone.parameters()).device
+    dtype = next(backbone.parameters()).dtype
+
+    new_modules = nn.ModuleList([
+        CRDFusionAdapter(channels=c)
+        for c in channels
+    ]).to(device=device, dtype=dtype)
+
+    backbone.FFMs = new_modules
+
+    # Used by CRD-Net reliability-distillation training.
+    backbone.crd_fusion_channels = channels
+
+    return model
+
+
+def load_e5_weights_into_crd(model, checkpoint_path, map_location="cpu"):
+    """
+    Load all shape-compatible E5 weights while intentionally excluding
+    the old E5 fusion-module parameters. New CRD fusion layers remain
+    independently initialized.
+
+    This function expects replace_fusion_modules(model) to be called first.
+    """
+    checkpoint_path = Path(checkpoint_path)
+
+    if not checkpoint_path.is_file():
+        raise FileNotFoundError(
+            f"E5 checkpoint not found: {checkpoint_path}"
+        )
+
+    checkpoint = torch.load(
+        checkpoint_path,
+        map_location=map_location,
+        weights_only=False,
+    )
+
+    if not isinstance(checkpoint, dict) or "model" not in checkpoint:
+        raise RuntimeError(
+            "Expected a training checkpoint containing the 'model' key."
+        )
+
+    source_state = checkpoint["model"]
+    target_state = model.state_dict()
+
+    # E5 fusion parameters are deliberately not reused by CRD-Net.
+    filtered_state = {
+        key: value
+        for key, value in source_state.items()
+        if ".FFMs." not in key
+        and key in target_state
+        and target_state[key].shape == value.shape
+    }
+
+    incompatible = model.load_state_dict(filtered_state, strict=False)
+
+    loaded_numel = sum(
+        target_state[key].numel()
+        for key in filtered_state
+    )
+
+    return {
+        "checkpoint_epoch": checkpoint.get("epoch"),
+        "checkpoint_iteration": checkpoint.get("iteration"),
+        "loaded_tensor_count": len(filtered_state),
+        "loaded_parameter_elements": loaded_numel,
+        "missing_keys": incompatible.missing_keys,
+        "unexpected_keys": incompatible.unexpected_keys,
+        "skipped_source_keys": [
+            key for key in source_state
+            if key not in filtered_state
+        ],
+    }
+
+
+class CRDFusionAdapter(nn.Module):
+    """
+    Adapt CRD fusion output to the tensor-only interface expected by
+    the existing E5 encoder. Reliability maps remain accessible.
+    """
+    def __init__(self, channels):
+        super().__init__()
+        self.fusion = ReliabilityGuidedFusion(channels=channels)
+        self.last_reliability = None
+
+    def forward(self, x_rgb, x_thermal):
+        fused, reliability = self.fusion(x_rgb, x_thermal)
+        self.last_reliability = reliability
+        return fused

@@ -1,0 +1,12 @@
+Model: /home/cse-sdpl/Downloads/CRD_Net/checkpoints/crd_epoch-last.pth
+(array([0.92030466, 0.        , 0.        , 0.        , 0.        ,
+       0.        , 0.        , 0.        , 0.        ]), np.float64(0.1022560738171843), np.float64(0.0), np.float64(0.8469547569345527), np.float64(0.11111100082665419), np.float64(0.9202973200999149))
+
+Model: /home/cse-sdpl/Downloads/CRD_Net/checkpoints/crd_epoch-last.pth
+(array([0.97777105, 0.86262525, 0.71990246, 0.72014282, 0.39115089,
+       0.36337434, 0.47226891, 0.6131872 , 0.45216347]), np.float64(0.6191762649729802), np.float64(0.57435191716791), np.float64(0.9572241304486908), np.float64(0.7080493425156371), np.float64(0.9771203115035076))
+
+Model: /home/cse-sdpl/Downloads/CRD_Net/checkpoints/crd_epoch-last.pth
+(array([0.97707728, 0.85902848, 0.72041312, 0.7249062 , 0.37713814,
+       0.36477956, 0.43838384, 0.6250217 , 0.41231798]), np.float64(0.6110073645565333), np.float64(0.5652486255117146), np.float64(0.9563135344697783), np.float64(0.6980427999728758), np.float64(0.9765437991602891))
+

@@ -1,0 +1,69 @@
+{
+  "project": "CRD-Net",
+  "full_name": "Causal Reliability Distillation Network",
+  "task": "RGB-Thermal Semantic Segmentation",
+  "status": "design_contract",
+  "baseline": {
+    "project": "CMX_E5",
+    "checkpoint": "/home/cse-sdpl/Downloads/CMX_E5/log_TDD_mit_b2_e5/checkpoint/epoch-100.pth",
+    "reference_test_mIoU_percent": 58.379,
+    "reference_test_pixel_accuracy_percent": 98.25,
+    "must_remain_unchanged": true
+  },
+  "dataset": {
+    "name": "TDD",
+    "root": "/home/cse-sdpl/Downloads/CMX_Original/datasets/TDD",
+    "classes": [
+      "unlabeled",
+      "car",
+      "person",
+      "bike",
+      "curve",
+      "car_stop",
+      "guardrail",
+      "color_cone",
+      "bump"
+    ],
+    "num_classes": 9,
+    "height": 480,
+    "width": 640,
+    "train_images": 1568,
+    "validation_images": 392,
+    "test_images": 393,
+    "reuse_existing_splits": true
+  },
+  "initial_architecture": {
+    "rgb_encoder": "SegFormer MiT-B2",
+    "thermal_encoder": "SegFormer MiT-B2",
+    "counterfactual_views": [
+      "clean_rgb_thermal",
+      "rgb_perturbed_or_suppressed",
+      "thermal_perturbed_or_suppressed"
+    ],
+    "reliability": "spatial modality reliability distilled from counterfactual prediction changes",
+    "fusion": "reliability-controlled cross-modal feature fusion",
+    "decoder": "MLP segmentation decoder",
+    "output_classes": 9
+  },
+  "initial_losses": {
+    "segmentation": "L_seg",
+    "reliability": "L_rel",
+    "distillation": "L_distill",
+    "total": "L_seg + lambda_r * L_rel + lambda_d * L_distill"
+  },
+  "deferred_extensions": [
+    "class-conditional modality reliability",
+    "consistency loss",
+    "reliability calibration loss",
+    "boundary refinement head"
+  ],
+  "experimental_rules": [
+    "Do not modify E0-E5 source files or checkpoints.",
+    "Keep CRD-Net implementation and checkpoints in the isolated CRD_Net workspace.",
+    "Verify tensor shapes and gradients before training.",
+    "Run a small-batch smoke test before any full training.",
+    "Use validation for development and the test split for final comparison.",
+    "Compare using the same TDD splits and evaluation protocol as the E5 reference.",
+    "Monitor disk space before creating checkpoints or prediction copies."
+  ]
+}
